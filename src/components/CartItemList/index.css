@@ -1,0 +1,38 @@
+.cartItemsList {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  margin-left: 100px;
+  margin-right: 100px;
+}
+.cartItemImage {
+  height: 200px;
+  width: 200px;
+}
+.cartItemTitle {
+  font-weight: bold;
+  font-size: 20px;
+}
+.cartItemPara {
+  font-size: 15px;
+}
+.cartItemCategory {
+  font-size: 15px;
+}
+.cartItemPrice {
+  font-weight: bold;
+}
+.cartRemoveItem {
+  background-color: transparent;
+  border: none;
+}
+.cardDelete {
+  display: flex;
+  margin-left: 5px;
+}
+.deleteIcon {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding-left: 100px;
+}

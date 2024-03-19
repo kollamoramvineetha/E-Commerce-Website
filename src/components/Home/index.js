@@ -1,39 +1,90 @@
-import {Link} from 'react-router-dom'
-import Header from '../Header'
+import {Component} from 'react'
+import {Loader} from 'react-loader-spinner'
 
+import Products from '../Products'
+
+import Header from '../Header'
 import './index.css'
 
-const Home = () => (
-  <>
-    <Header />
-    <div className="home-container">
-      <div className="home-content">
-        <h1 className="home-heading">Clothes That Get YOU Noticed</h1>
-        <img
-          src="https://assets.ccbp.in/frontend/react-js/nxt-trendz-home-img.png"
-          alt="clothes that get you noticed"
-          className="home-mobile-img"
-        />
-        <p className="home-description">
-          Fashion is part of the daily air and it does not quite help that it
-          changes all the time. Clothes have always been a marker of the era and
-          we are in a revolution. Your fashion makes you been seen and heard
-          that way you are. So, celebrate the seasons new and exciting fashion
-          in your own way.
-        </p>
-        <Link to="/products">
-          <button type="button" className="shop-now-button">
-            Shop Now
-          </button>
-        </Link>
-      </div>
-      <img
-        src="https://assets.ccbp.in/frontend/react-js/nxt-trendz-home-img.png"
-        alt="clothes that get you noticed"
-        className="home-desktop-img"
-      />
+const apiStatusConst = {
+  initial: 'INITIAL',
+  inprogress: 'InPROGRESS',
+  success: 'SUCCESS',
+  failure: 'FAILURE',
+}
+
+class Home extends Component {
+  state = {listItems: [], apiStatus: apiStatusConst.initial}
+
+  componentDidMount() {
+    this.getProducts()
+  }
+
+  getProducts = async () => {
+    this.setState({apiStatus: apiStatusConst.inprogress})
+    const data = await fetch('https://fakestoreapi.com/products')
+    const response = await data.json()
+    if (data.ok) {
+      const updatedData = response.map(each => ({
+        id: each.id,
+        title: each.title,
+        price: each.price,
+        category: each.category,
+        description: each.description,
+        image: each.image,
+      }))
+      this.setState({listItems: updatedData, apiStatus: apiStatusConst.success})
+    } else {
+      this.setState({apiStatus: apiStatusConst.failure})
+    }
+  }
+
+  renderSuccessView = () => {
+    const {listItems} = this.state
+    return (
+      <ul className="productsCard">
+        {listItems.map(each => (
+          <Products key={each.id} productData={each} />
+        ))}
+      </ul>
+    )
+  }
+
+  renderFailureView = () => (
+    <div>
+      <h1>No Products Found</h1>
     </div>
-  </>
-)
+  )
+
+  progressView = () => (
+    <div className="LoadingContainer">
+      <Loader type="ThreeDots" color="#0b69ff" height="50" width="50" />
+    </div>
+  )
+
+  renderStatus = () => {
+    const {apiStatus} = this.state
+
+    switch (apiStatus) {
+      case apiStatusConst.success:
+        return this.renderSuccessView()
+      case apiStatusConst.progress:
+        return this.progressView()
+      case apiStatusConst.failure:
+        return this.renderFailureView()
+      default:
+        return null
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        <Header />
+        <div>{this.renderStatus()}</div>
+      </div>
+    )
+  }
+}
 
 export default Home

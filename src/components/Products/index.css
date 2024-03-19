@@ -5,3 +5,27 @@
   width: 90%;
   max-width: 1110px;
 }
+.listCard {
+  display: flex;
+  height: 300px;
+  width: 300px;
+  margin: auto;
+  padding: 20px;
+  margin-top: 60px;
+  color: black;
+  padding-right: 10px;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  align-items: center;
+}
+.detailsCard {
+  overflow-y: auto;
+}
+.listCardImage {
+  height: 200px;
+  width: 200px;
+  margin-left: 50px;
+}
+.listPara {
+  color: black;
+}
